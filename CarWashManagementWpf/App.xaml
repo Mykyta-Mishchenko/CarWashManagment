@@ -1,9 +1,35 @@
 ﻿<Application x:Class="CarWashManagementWpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:CarWashManagementWpf"
-             StartupUri="MainWindow.xaml">
+             xmlns:viewModel="clr-namespace:CarWashManagementWpf.MVVM.ViewModel"
+             xmlns:view="clr-namespace:CarWashManagementWpf.MVVM.View"
+             xmlns:local="clr-namespace:CarWashManagementWpf">
     <Application.Resources>
-         
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/RegularButton.xaml"/>
+                <ResourceDictionary Source="Themes/RegularComboBox.xaml"/>
+                <ResourceDictionary Source="Themes/RegularListViewItem.xaml"/>
+                <ResourceDictionary Source="Themes/RegularExpander.xaml"/>
+                
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:MoneySplitViewModel}">
+                <view:MoneySplitView/>
+            </DataTemplate>
+
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:WholeTableViewModel}">
+                <view:WholeTableView/>
+            </DataTemplate>
+
+
+            <DataTemplate DataType="{x:Type TypeName=viewModel:SelectionViewModel}">
+                <view:SelectionView/>
+            </DataTemplate>
+        </ResourceDictionary>
+
     </Application.Resources>
+    
 </Application>
