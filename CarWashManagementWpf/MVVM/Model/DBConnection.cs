@@ -6,6 +6,7 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
@@ -186,6 +187,28 @@ namespace CarWashManagementWpf.MVVM.Model
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
+        }
+        public List<string> GetAllWorkers()
+        {
+            List<string> workers = new List<string>();
+            try
+            {
+                MySQLConnection = new MySqlConnection(MySQLCon);
+                MySQLConnection.Open();
+
+                MySqlCommand cmd = MySQLConnection.CreateCommand();
+                cmd.CommandText = "SELECT worker_name FROM ServiceWorkers";
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        workers.Add(reader.GetString("worker_name"));
+                    }
+                }
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            finally { MySQLConnection.Close(); }
+            return workers;
         }
         public Dictionary<string, float> GetWorkersBill()
         {
