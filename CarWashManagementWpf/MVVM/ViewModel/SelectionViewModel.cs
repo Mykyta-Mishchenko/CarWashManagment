@@ -12,6 +12,14 @@ namespace CarWashManagementWpf.MVVM.ViewModel
     class SelectionViewModel : Core.ViewModel
     {
         public ObservableCollection<Utility> utilities { get; set; }
+        private Utility _chosenUtility;
+
+        public Utility ChosenUtility
+        {
+            get { return _chosenUtility; }
+            set { _chosenUtility = value; OnPropertyChanged(); }
+        }
+
         private INavigationService _navigation;
 
         public INavigationService Navigation
