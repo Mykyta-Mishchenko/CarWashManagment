@@ -1,17 +1,13 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Microsoft.VisualBasic;
-using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Relational;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Linq.Expressions;
-using System.Net.Http.Headers;
-using System.Reflection.PortableExecutable;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Linq;
+using System.Text;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Threading.Tasks;
 
-namespace ConsoleApp
+namespace CarWashManagementWpf.MVVM.Model
 {
     public class DBConection
     {
@@ -28,9 +24,10 @@ namespace ConsoleApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine (ex.Message);
+                Console.WriteLine(ex.Message);
             }
-            finally{
+            finally
+            {
                 MySQLConnection.Close();
             }
             Console.WriteLine("End");
@@ -97,11 +94,11 @@ namespace ConsoleApp
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            finally{ MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); }
             return recordTable;
         }
         public void AddRecord(string service_type, string workers)
@@ -128,21 +125,21 @@ namespace ConsoleApp
                 string[] workersNames = workers.Split(',');
                 for (int i = 0; i < workersNames.Length; i++)
                 {
-                    cmd.CommandText = "SELECT worker_id FROM ServiceWorkers WHERE worker_name='" + workersNames[i]+"'";
+                    cmd.CommandText = "SELECT worker_id FROM ServiceWorkers WHERE worker_name='" + workersNames[i] + "'";
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            workers_IDs += reader.GetInt32("worker_id")+",";
+                            workers_IDs += reader.GetInt32("worker_id") + ",";
                         }
                     }
                 }
                 workers_IDs = workers_IDs.TrimEnd(',');
-                cmd.CommandText = "INSERT INTO ServiceTotal (service_id,date,workers_id) VALUES ("+
-                                   service_id+",'"+ formattedDateTime+"','"+workers_IDs+"')";
+                cmd.CommandText = "INSERT INTO ServiceTotal (service_id,date,workers_id) VALUES (" +
+                                   service_id + ",'" + formattedDateTime + "','" + workers_IDs + "')";
                 cmd.ExecuteNonQuery();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -170,7 +167,7 @@ namespace ConsoleApp
                 MySQLConnection.Open();
 
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                cmd.CommandText = "INSERT INTO ServiceWorkers (worker_name) VALUES ('"+name+"')";
+                cmd.CommandText = "INSERT INTO ServiceWorkers (worker_name) VALUES ('" + name + "')";
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
@@ -184,13 +181,13 @@ namespace ConsoleApp
                 MySQLConnection.Open();
 
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                cmd.CommandText = "DELETE FROM ServiceWorkers WHERE worker_name = '"+name+"'";
+                cmd.CommandText = "DELETE FROM ServiceWorkers WHERE worker_name = '" + name + "'";
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
         }
-        public Dictionary<string,float> GetWorkersBill()
+        public Dictionary<string, float> GetWorkersBill()
         {
             Dictionary<string, float> workers = new Dictionary<string, float>();
             try
@@ -204,14 +201,14 @@ namespace ConsoleApp
                 {
                     while (reader.Read())
                     {
-                        workers.Add(reader.GetString("worker_name"),0);
+                        workers.Add(reader.GetString("worker_name"), 0);
                     }
                 }
 
                 DataTable recordTable = GetRecordTable();
                 foreach (DataRow row in recordTable.Rows)
                 {
-                    string []rowWorkers = row["Service_Workers"].ToString().Split('/');
+                    string[] rowWorkers = row["Service_Workers"].ToString().Split('/');
                     for (int i = 0; i < rowWorkers.Length; i++)
                     {
                         workers[rowWorkers[i].Trim()] += Convert.ToSingle(row["Service_Price"]) / rowWorkers.Length;
