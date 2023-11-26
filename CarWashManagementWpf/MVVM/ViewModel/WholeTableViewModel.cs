@@ -55,14 +55,6 @@ namespace CarWashManagementWpf.MVVM.ViewModel
                     Workers = "one"
                 }
             };
-            records.Add(new Wholegridtest()
-            {
-                ID = 3,
-                WorkType = "utility",
-                Date = DateTime.Now,
-                Price = 250,
-                Workers = "one"
-            });
         }
     }
 }

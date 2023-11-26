@@ -35,11 +35,6 @@ namespace ConsoleApp
             }
             Console.WriteLine("End");
         }
-        public bool AddTableRecord()
-        {
-
-            return true;
-        }
         public DataTable GetRecordTable()
         {
             DataTable recordTable = new DataTable("Records");
