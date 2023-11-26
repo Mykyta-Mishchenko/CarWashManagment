@@ -8,14 +8,15 @@ namespace CarWashManagementWpf.MVVM.Model
     public class Bind
     {
         private DataTable recordsTable;
-        private DBConnection dbConnection;
-
+        public DBConnection DBConnection { get; set; }
+        public Bind() 
+        {
+            DBConnection = new DBConnection();
+        }
         public ObservableCollection<RecordRow> GetRecordList()
         {
-            dbConnection = new DBConnection();
             ObservableCollection<RecordRow> records = new ObservableCollection<RecordRow>();
-            recordsTable = dbConnection.GetRecordTable();
-
+            recordsTable = DBConnection.GetRecordTable();
             foreach (DataRow row in recordsTable.Rows)
             {
                 records.Add(new RecordRow
@@ -36,8 +37,7 @@ namespace CarWashManagementWpf.MVVM.Model
 
         public ObservableCollection<Worker> GetWorkersBill()
         {
-            dbConnection = new DBConnection();
-            Dictionary<string, float> workersFromDB = dbConnection.GetWorkersBill();
+            Dictionary<string, float> workersFromDB = DBConnection.GetWorkersBill();
             ObservableCollection<Worker> workersList = new ObservableCollection<Worker>();
 
             foreach (var worker in workersFromDB)
@@ -54,8 +54,7 @@ namespace CarWashManagementWpf.MVVM.Model
 
         public double GetTotalBill()
         {
-            dbConnection = new DBConnection();
-            Dictionary<string, float> workersFromDB = dbConnection.GetWorkersBill();
+            Dictionary<string, float> workersFromDB = DBConnection.GetWorkersBill();
             double totalBill = 0;
             foreach (var worker in workersFromDB)
             {
@@ -67,15 +66,25 @@ namespace CarWashManagementWpf.MVVM.Model
         
         public ObservableCollection<string> GetWorkers()
         {
-            dbConnection = new DBConnection();
             ObservableCollection<string> workers = new ObservableCollection<string>();
 
-            foreach (var worker in dbConnection.GetAllWorkers())
+            foreach (var worker in DBConnection.GetAllWorkers())
             {
                 workers.Add(worker);
             }
 
             return workers;
+        }
+        public void ChangeDate(int id, string newDate)
+        {
+            foreach (DataRow row in recordsTable.Rows)
+            {
+                if ((int)row["ID"] == id)
+                {
+                    DBConnection.ChangeDate(newDate, (int)row["Service_ID"]);
+                    break;
+                }
+            }
         }
     }
 }
