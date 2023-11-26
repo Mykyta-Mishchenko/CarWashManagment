@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
-    public class DBConection
+    public class DBConnection
     {
         private string MySQLCon = "server=sql8.freesqldatabase.com;database=sql8663313;user=sql8663313;password=Ms3E9BJuXU";
         private MySqlConnection MySQLConnection;
-        public DBConection()
+        public DBConnection()
         {
             Console.WriteLine("Start");
             MySQLConnection = new MySqlConnection(MySQLCon);

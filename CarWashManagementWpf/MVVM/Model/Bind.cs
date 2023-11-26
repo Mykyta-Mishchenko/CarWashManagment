@@ -12,16 +12,29 @@ namespace CarWashManagementWpf.MVVM.Model
     public class Bind
     {
         private DataTable recordsTable;
-        private DbConnection dbConnection;
+        private DBConnection dbConnection;
 
-        public ObservableColection<RecordRow> GetRecordList()
+        public ObservableCollection<RecordRow> GetRecordList()
         {
 
+        
         }
 
         public ObservableCollection<Worker> GetTotalBill()
         {
-            ObservableCollection<Worker> workers = 
+            Dictionary<string, float> workersFromDB = dbConnection.GetWorkersBill();
+            ObservableCollection<Worker> workersList = new ObservableCollection<Worker>();
+
+            foreach(var worker in workersFromDB)
+            {
+                Worker workerFromDB = new Worker();
+                workerFromDB.Name = worker.Key;
+                workerFromDB.Money = worker.Value;
+
+                workersList.Add(workerFromDB); 
+            }           
+
+            return workers;
         }
     }
 }
