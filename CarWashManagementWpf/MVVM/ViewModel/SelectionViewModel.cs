@@ -12,6 +12,18 @@ namespace CarWashManagementWpf.MVVM.ViewModel
 {
     class SelectionViewModel : Core.ViewModel
     {
+        private ObservableCollection<string> _workers;
+
+        public ObservableCollection<string> Workers
+        {
+            get { return _workers; }
+            set 
+            {
+                _workers = value;
+                OnPropertyChanged();
+            }
+        }
+
         private IBindService _bindInstance;
 
         public IBindService BindInstance
@@ -44,6 +56,7 @@ namespace CarWashManagementWpf.MVVM.ViewModel
             Navigation = navigation;
             NavigateToWholeTable = new RelayCommand(execute: o => Navigation.NavigateTo<WholeTableViewModel>(), canExecute: o => true);
             NavigateToMoneySplit = new RelayCommand(execute: o => Navigation.NavigateTo<MoneySplitViewModel>(), canExecute: o => true);
+            Workers = BindInstance.BindInstance.GetWorkers();
             utilities = new ObservableCollection<Utility>()
             {
                 new Utility()
