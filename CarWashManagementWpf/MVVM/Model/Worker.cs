@@ -8,7 +8,19 @@ namespace CarWashManagementWpf.MVVM.Model
 {
     public class Worker
     {
-        public  string Name { get; set; }
-        public int Money { get; set; }
+        private string name;
+        private float salary;
+        
+
+        public string Name 
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public float Salary
+        {
+            get { return (float) Math.Round(salary, 2); }
+            set { salary = value; }
+        }
     }
 }
