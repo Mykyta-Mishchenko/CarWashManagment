@@ -11,7 +11,8 @@
             <RowDefinition/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Stretch">
             <ListView HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       Background="Transparent"
