@@ -22,8 +22,11 @@ namespace CarWashManagementWpf.MVVM.Model
                 {
                     ID = (int)row["ID"],
                     ServiceType = (string)row["Service_Type"],
-                    Price = (float)row["Service_Price"],
-                    Date = (DateTime)row["Service_Date"],
+                    Price = double.Parse((string)row["Service_Price"]),
+                    // Price = (float)row["Service_Price"],
+                    //Date = (DateTime)row["Service_Date"],
+                    Date = DateTime.Parse((string)row["Service_Date"]),
+
                     Workers = (string)row["Service_Workers"]
                 });
             }

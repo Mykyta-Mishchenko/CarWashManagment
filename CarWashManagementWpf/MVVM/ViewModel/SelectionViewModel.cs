@@ -1,5 +1,6 @@
 ﻿using CarWashManagementWpf.Core;
 using CarWashManagementWpf.MVVM.Model;
+using CarWashManagementWpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,13 @@ namespace CarWashManagementWpf.MVVM.ViewModel
 {
     class SelectionViewModel : Core.ViewModel
     {
+        private IBindService _bindInstance;
+
+        public IBindService BindInstance
+        {
+            get { return _bindInstance; }
+            set { _bindInstance = value; }
+        }
         public ObservableCollection<Utility> utilities { get; set; }
         private Utility _chosenUtility;
 
@@ -30,8 +38,9 @@ namespace CarWashManagementWpf.MVVM.ViewModel
         public RelayCommand NavigateToMoneySplit { get; set; }
         public RelayCommand NavigateToWholeTable { get; set; }
 
-        public SelectionViewModel(INavigationService navigation)
+        public SelectionViewModel(INavigationService navigation, IBindService bind)
         {
+            BindInstance = bind;
             Navigation = navigation;
             NavigateToWholeTable = new RelayCommand(execute: o => Navigation.NavigateTo<WholeTableViewModel>(), canExecute: o => true);
             NavigateToMoneySplit = new RelayCommand(execute: o => Navigation.NavigateTo<MoneySplitViewModel>(), canExecute: o => true);

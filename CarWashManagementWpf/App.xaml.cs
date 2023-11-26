@@ -1,5 +1,6 @@
 ﻿using CarWashManagementWpf.Core;
 using CarWashManagementWpf.MVVM.ViewModel;
+using CarWashManagementWpf.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace CarWashManagementWpf
             services.AddSingleton<MoneySplitViewModel>();
             services.AddSingleton<WholeTableViewModel>();
             services.AddSingleton<INavigationService, Services.NavigationService>();
+            services.AddSingleton<IBindService, Services.BindService>();
 
 
 

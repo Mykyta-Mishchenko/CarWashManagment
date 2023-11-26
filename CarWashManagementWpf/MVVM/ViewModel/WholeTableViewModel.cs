@@ -1,5 +1,6 @@
 ﻿using CarWashManagementWpf.Core;
 using CarWashManagementWpf.MVVM.Model;
+using CarWashManagementWpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,13 @@ namespace CarWashManagementWpf.MVVM.ViewModel
 {
     class WholeTableViewModel : Core.ViewModel
     {
+        private IBindService _bindInstance;
+
+        public IBindService BindInstance
+        {
+            get { return _bindInstance; }
+            set { _bindInstance = value; }
+        }
         private INavigationService _navigation;
 
         public INavigationService Navigation
@@ -19,16 +27,18 @@ namespace CarWashManagementWpf.MVVM.ViewModel
             set { _navigation = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<Wholegridtest> records { get; set; }
+        public ObservableCollection<RecordRow> records { get; set; }
 
         public RelayCommand NavigateToMoneySplit { get; set; }
         public RelayCommand NavigateToSelection { get; set; }
-        public WholeTableViewModel(INavigationService navigation)
+        public WholeTableViewModel(INavigationService navigation, IBindService bind)
         {
+            BindInstance = bind;
             Navigation = navigation;
             NavigateToSelection = new RelayCommand(execute: o => Navigation.NavigateTo<SelectionViewModel>(), canExecute: o => true);
             NavigateToMoneySplit = new RelayCommand(execute: o => Navigation.NavigateTo<MoneySplitViewModel>(), canExecute: o => true);
-            records = new ObservableCollection<Wholegridtest>()
+            records = BindInstance.BindInstance.GetRecordList();
+            /*records = new ObservableCollection<Wholegridtest>()
             {
                 new Wholegridtest()
                 {
@@ -54,7 +64,7 @@ namespace CarWashManagementWpf.MVVM.ViewModel
                     Price = 250,
                     Workers = "one"
                 }
-            };
+            };*/
         }
     }
 }
