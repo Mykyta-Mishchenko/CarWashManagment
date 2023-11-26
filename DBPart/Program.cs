@@ -8,7 +8,7 @@ using System.Security.Policy;
 
 DBConection db =  new DBConection();
 
-//db.AddRecord("Interior and body", "Mykyta M.,Galia S.,Maks P.");
+db.AddRecord("Car body wash", "Mykola K.,Nazar L.");
 
 
 DataTable table = db.GetRecordTable();

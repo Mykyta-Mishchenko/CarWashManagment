@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
-    class RecordRow
+    public class RecordRow
     {
         private int id;
         private string serviceType;
