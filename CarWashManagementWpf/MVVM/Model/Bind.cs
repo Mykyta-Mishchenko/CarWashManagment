@@ -51,6 +51,7 @@ namespace CarWashManagementWpf.MVVM.Model
 
         public double GetTotalBill()
         {
+            dbConnection = new DBConnection();
             Dictionary<string, float> workersFromDB = dbConnection.GetWorkersBill();
             double totalBill = 0;
             foreach (var worker in workersFromDB)
@@ -59,6 +60,19 @@ namespace CarWashManagementWpf.MVVM.Model
             }
 
             return (double)Math.Round(totalBill, 2);
+        }
+        
+        public ObservableCollection<string> GetWorkers()
+        {
+            dbConnection = new DBConnection();
+            ObservableCollection<string> workers = new ObservableCollection<string>();
+
+            foreach (var worker in dbConnection.GetAllWorkers())
+            {
+                workers.Add(worker);
+            }
+
+            return workers;
         }
     }
 }
