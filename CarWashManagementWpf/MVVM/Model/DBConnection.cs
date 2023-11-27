@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Reflection.PortableExecutable;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
@@ -50,47 +51,22 @@ namespace CarWashManagementWpf.MVVM.Model
             MySQLConnection.Open();
             try
             {
-                MySqlCommand records = MySQLConnection.CreateCommand();
-                records.CommandText = "SELECT id FROM ServiceTotal";
-                List<int> records_IDs = new List<int>();
-                using (MySqlDataReader reader = records.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        records_IDs.Add(reader.GetInt32(0));
-                    }
-                }
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                for (int i = 0; i < records_IDs.Count(); i++)
+                cmd.CommandText = "SELECT ServiceTotal.service_id, ServiceTotal.workers," +
+                    " ServiceTotal.date, ServiceTypes.service_type," +
+                    " ServiceTypes.service_price FROM ServiceTotal, ServiceTypes" +
+                    " WHERE ServiceTypes.service_id = ServiceTotal.service_id";
+                using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    cmd.CommandText = "SELECT ServiceTotal.id, ServiceTotal.service_id, ServiceTotal.workers_id," +
-                    " ServiceTotal.date,ServiceWorkers.worker_id ,ServiceWorkers.worker_name, ServiceTypes.service_type," +
-                    " ServiceTypes.service_price FROM ServiceTotal, ServiceTypes, ServiceWorkers" +
-                    " WHERE ServiceTypes.service_id = ServiceTotal.service_id AND ServiceTotal.id = " + records_IDs[i];
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    for (int i = 1; reader.Read(); ++i)
                     {
                         DataRow row = recordTable.NewRow();
-                        bool flag = false;
-                        while (reader.Read())
-                        {
-                            if (reader.GetString("workers_id").Contains(reader.GetString("worker_id")))
-                            {
-                                if (flag)
-                                {
-                                    row["Service_Workers"] += " / " + reader.GetString("worker_name");
-                                }
-                                else
-                                {
-                                    row["ID"] = i;
-                                    row["Service_ID"] = reader.GetInt32("service_id");
-                                    row["Service_Type"] = reader.GetString("service_type");
-                                    row["Service_Price"] = reader.GetInt32("service_price");
-                                    row["Service_Date"] = reader.GetString("date");
-                                    row["Service_Workers"] = reader.GetString("worker_name");
-                                    flag = true;
-                                }
-                            }
-                        }
+                        row["ID"] = i;
+                        row["Service_ID"] = reader.GetInt32("service_id");
+                        row["Service_Type"] = reader.GetString("service_type");
+                        row["Service_Price"] = reader.GetInt32("service_price");
+                        row["Service_Date"] = reader.GetString("date");
+                        row["Service_Workers"] = reader.GetString("workers");
                         recordTable.Rows.Add(row);
                     }
                 }
@@ -123,21 +99,10 @@ namespace CarWashManagementWpf.MVVM.Model
                         service_id = reader.GetInt32("service_id");
                     }
                 }
-                string[] workersNames = workers.Split(',');
-                for (int i = 0; i < workersNames.Length; i++)
-                {
-                    cmd.CommandText = "SELECT worker_id FROM ServiceWorkers WHERE worker_name='" + workersNames[i] + "'";
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            workers_IDs += reader.GetInt32("worker_id") + ",";
-                        }
-                    }
-                }
+                workers = workers.Replace(',','/');
                 workers_IDs = workers_IDs.TrimEnd(',');
-                cmd.CommandText = "INSERT INTO ServiceTotal (service_id,date,workers_id) VALUES (" +
-                                   service_id + ",'" + formattedDateTime + "','" + workers_IDs + "')";
+                cmd.CommandText = "INSERT INTO ServiceTotal (service_id,date,workers) VALUES (" +
+                                   service_id + ",'" + formattedDateTime + "','" + workers + "')";
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
