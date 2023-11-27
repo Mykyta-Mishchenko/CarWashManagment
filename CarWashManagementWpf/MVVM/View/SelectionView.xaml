@@ -9,11 +9,12 @@
              >
     <Grid Background="#F9ECCA">
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition />
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" 
-                    HorizontalAlignment="Stretch">
+                    HorizontalAlignment="Stretch"
+                    Height="auto">
             <ListView HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       Background="Transparent"
@@ -25,34 +26,55 @@
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal">
-                            
+
                         </StackPanel>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <Expander Header="Select workers"
+            <Grid Height="auto">
+                
+                <Expander Header="Select workers"
                       Style="{StaticResource RegularExpander}"
-                      Margin="30,20,30,0"
-                       >
-                <StackPanel>
-                    <ScrollViewer>
-                        <ListView ItemsSource="{Binding Workers}"
+                      Margin="30,20,30,0">
+                    <StackPanel>
+                        <ScrollViewer>
+                            <StackPanel>
+                                <ListView ItemsSource="{Binding Workers}"
                                   SelectionMode="Multiple"
                                   Name="WorkersListView">
-                        </ListView>
+                                </ListView>
 
-                    </ScrollViewer>
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Add"
-                                Style="{StaticResource RegularButton}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,2,0,0">
+                            <TextBlock Text="Worker's name:"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                       FontSize="16"/>
+                            <TextBox Width="70"
+                                 Margin="0,0,5,0"
+                                 Text="{Binding NewWorkersName}"
+                                      FontSize="16"/>
+                            <Button Content="Add"
+                                    Command="{Binding AddWorkerCommand}"
+                                    Margin="0,0,5,0"
+                                    Background="#ffffff"
+                                    BorderThickness="0"
+                                     FontSize="16"
+                                    Width="50"/>
+                            <Button Content="Remove"
+                                    Command="{Binding RemoveWorkerCommand}"
+                                    Background="#ffffff"
+                                    BorderThickness="0"
+                                     FontSize="16"
+                                    Width="80"/>
 
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-                
-               
-               
-               
-            </Expander>
+
+                </Expander>
+            </Grid>
         </StackPanel>
         <Grid Grid.Row="1" Background="#FFE296">
             <Grid.ColumnDefinitions>

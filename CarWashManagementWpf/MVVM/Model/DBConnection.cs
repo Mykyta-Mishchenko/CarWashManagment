@@ -158,7 +158,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); OnDataChanged(); }
+            finally { MySQLConnection.Close(); }
         }
         public void AddWorker(string name)
         {
@@ -207,7 +207,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); OnDataChanged(); }
+            finally { MySQLConnection.Close(); }
             return workers;
         }
         public Dictionary<string, float> GetWorkersBill()
@@ -239,7 +239,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); OnDataChanged(); }
+            finally { MySQLConnection.Close(); }
             return workers;
         }
 

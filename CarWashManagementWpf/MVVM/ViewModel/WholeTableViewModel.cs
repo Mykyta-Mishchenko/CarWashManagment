@@ -44,33 +44,7 @@ namespace CarWashManagementWpf.MVVM.ViewModel
             NavigateToSelection = new RelayCommand(execute: o => Navigation.NavigateTo<SelectionViewModel>(), canExecute: o => true);
             NavigateToMoneySplit = new RelayCommand(execute: o => Navigation.NavigateTo<MoneySplitViewModel>(), canExecute: o => true);
             records = BindInstance.BindInstance.GetRecordList();
-            /*records = new ObservableCollection<Wholegridtest>()
-            {
-                new Wholegridtest()
-                {
-                    ID = 1,
-                    WorkType = "utility",
-                    Date = DateTime.Now,
-                    Price = 250,
-                    Workers = "one"
-                },
-                new Wholegridtest()
-                {
-                    ID = 2,
-                    WorkType = "utility",
-                    Date = DateTime.Now,
-                    Price = 250,
-                    Workers = "one"
-                },
-                new Wholegridtest()
-                {
-                    ID = 3,
-                    WorkType = "utility",
-                    Date = DateTime.Now,
-                    Price = 250,
-                    Workers = "one"
-                }
-            };*/
+            
         }
     }
 }
