@@ -36,15 +36,19 @@
                        >
                 <StackPanel>
                     <ScrollViewer>
-                        <ListBox ItemsSource="{Binding Workers}"
-                              SelectionMode="Multiple"
-                                  >
-                        </ListBox>
+                        <ListView ItemsSource="{Binding Workers}"
+                                  SelectionMode="Multiple"
+                                  Name="WorkersListView">
+                        </ListView>
 
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Add"/>
-                        <Button Content="Add"/>
+                        <Button Content="Save"
+                                CommandParameter="{Binding ElementName=WorkersListView, Path=SelectedItems}"
+                                Command="{Binding SyncWorkersCommand}"
+                                Style="{StaticResource RegularButton}"/>
+                        <Button Content="Add"
+                                Style="{StaticResource RegularButton}"/>
 
                     </StackPanel>
                 </StackPanel>
@@ -70,7 +74,8 @@
                     HorizontalAlignment="Right"
                     Margin="0,0,30,0"
                     Content="Next"
-                    Command="{Binding NavigateToWholeTable}"/>
+                    CommandParameter="{Binding ElementName=WorkersListView, Path=SelectedItems}"
+                    Command="{Binding NextCommand}"/>
         </Grid>
     </Grid>
 </UserControl>
