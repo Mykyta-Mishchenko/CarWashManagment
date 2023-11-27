@@ -144,7 +144,7 @@ namespace CarWashManagementWpf.MVVM.Model
             {
                 Console.WriteLine(ex.Message);
             }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public void ChangeDate(string date, int id)
         {
@@ -158,7 +158,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public void AddWorker(string name)
         {
@@ -172,7 +172,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public void RemoveWorker(string name)
         {
@@ -186,7 +186,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public List<string> GetAllWorkers()
         {
@@ -207,7 +207,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
             return workers;
         }
         public Dictionary<string, float> GetWorkersBill()
@@ -239,8 +239,15 @@ namespace CarWashManagementWpf.MVVM.Model
                 }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
             return workers;
+        }
+
+        public event EventHandler DataChanged;
+
+        protected virtual void OnDataChanged()
+        {
+            DataChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

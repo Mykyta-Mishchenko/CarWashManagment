@@ -31,10 +31,16 @@ namespace CarWashManagementWpf.MVVM.ViewModel
 
         public RelayCommand NavigateToMoneySplit { get; set; }
         public RelayCommand NavigateToSelection { get; set; }
+
+        public void OnDataChanged(object sender, EventArgs e)
+        {
+            records = BindInstance.BindInstance.GetRecordList();
+        }
         public WholeTableViewModel(INavigationService navigation, IBindService bind)
         {
             BindInstance = bind;
             Navigation = navigation;
+            BindInstance.BindInstance.DBConnection.DataChanged += OnDataChanged;
             NavigateToSelection = new RelayCommand(execute: o => Navigation.NavigateTo<SelectionViewModel>(), canExecute: o => true);
             NavigateToMoneySplit = new RelayCommand(execute: o => Navigation.NavigateTo<MoneySplitViewModel>(), canExecute: o => true);
             records = BindInstance.BindInstance.GetRecordList();
