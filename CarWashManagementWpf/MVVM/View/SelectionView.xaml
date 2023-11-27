@@ -43,10 +43,6 @@
 
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Save"
-                                CommandParameter="{Binding ElementName=WorkersListView, Path=SelectedItems}"
-                                Command="{Binding SyncWorkersCommand}"
-                                Style="{StaticResource RegularButton}"/>
                         <Button Content="Add"
                                 Style="{StaticResource RegularButton}"/>
 
