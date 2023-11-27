@@ -35,21 +35,15 @@ namespace CarWashManagementWpf.MVVM.ViewModel
         {
             BindInstance = bind;
             Navigation = navigation;
+            BindInstance.BindInstance.DBConnection.DataChanged += OnDataChanged;
             NavigateToWholeTable = new RelayCommand(execute: o => Navigation.NavigateTo<WholeTableViewModel>(), canExecute: o => true);
             Workers = BindInstance.BindInstance.GetWorkersBill();
-            /*Workers = new ObservableCollection<Worker>()
-            {
-                new Worker()
-                {
-                    Name="Petro",
-                    Salary=1800
-                },
-                new Worker() {
-                    Name="Ivan",
-                    Salary=900
-                }
+            
+        }
 
-            };*/
+        public void OnDataChanged(object sender, EventArgs e)
+        {
+            Workers = BindInstance.BindInstance.GetWorkersBill();
         }
 
     }

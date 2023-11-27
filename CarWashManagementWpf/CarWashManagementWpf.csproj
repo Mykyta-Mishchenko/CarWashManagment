@@ -8,10 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\car-dry-cleaning.jpg" />
+    <None Remove="Images\car-interior-wash.jpg" />
     <None Remove="Images\car-wash.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\car-dry-cleaning.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\car-interior-wash.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\car-wash.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

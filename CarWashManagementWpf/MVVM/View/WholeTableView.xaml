@@ -11,12 +11,14 @@
             <RowDefinition/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
+        
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      Grid.Row="0">
             <DataGrid ItemsSource="{Binding records}"
                       Margin="20,20,20,0">
-                
+
             </DataGrid>
-        </StackPanel>
+        </ScrollViewer>
         <Grid Grid.Row="1" Background="#FFE296">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

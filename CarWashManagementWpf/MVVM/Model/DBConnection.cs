@@ -58,7 +58,7 @@ namespace CarWashManagementWpf.MVVM.Model
                     " WHERE ServiceTypes.service_id = ServiceTotal.service_id";
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
-                    for (int i = 0; reader.Read(); ++i)
+                    for (int i = 1; reader.Read(); ++i)
                     {
                         DataRow row = recordTable.NewRow();
                         row["ID"] = i;
@@ -101,7 +101,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 }
                 workers = workers.Replace(',','/');
                 workers_IDs = workers_IDs.TrimEnd(',');
-                cmd.CommandText = "INSERT INTO ServiceTotal (service_id,date,workers_id) VALUES (" +
+                cmd.CommandText = "INSERT INTO ServiceTotal (service_id,date,workers) VALUES (" +
                                    service_id + ",'" + formattedDateTime + "','" + workers + "')";
                 cmd.ExecuteNonQuery();
             }
@@ -109,7 +109,7 @@ namespace CarWashManagementWpf.MVVM.Model
             {
                 Console.WriteLine(ex.Message);
             }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public void ChangeDate(string date, int id)
         {
@@ -137,7 +137,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public void RemoveWorker(string name)
         {
@@ -151,7 +151,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { MySQLConnection.Close(); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public List<string> GetAllWorkers()
         {
@@ -206,6 +206,13 @@ namespace CarWashManagementWpf.MVVM.Model
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
             return workers;
+        }
+
+        public event EventHandler DataChanged;
+
+        protected virtual void OnDataChanged()
+        {
+            DataChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
