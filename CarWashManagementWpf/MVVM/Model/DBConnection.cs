@@ -202,6 +202,10 @@ namespace CarWashManagementWpf.MVVM.Model
                         workers[rowWorkers[i].Trim()] += Convert.ToSingle(row["Service_Price"]) / rowWorkers.Length;
                     }
                 }
+                foreach(KeyValuePair<string, float> worker in workers)
+                {
+                    workers[worker.Key] *= 0.5f;
+                }
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
