@@ -9,11 +9,11 @@
         <Trigger Property="IsFocused" Value="False">
                 <Setter Property="Background" Value="#FFE296"/>
         </Trigger>
-
-    </Style.Triggers>
+           
+        </Style.Triggers>
     <!-- #393b40-->
-    <Setter Property="Background" Value="#FFE296"/>
-    <Setter Property="Template">
+        <Setter Property="Background" Value="#FFE296"/>
+        <Setter Property="Template">
         <Setter.Value>
             <ControlTemplate TargetType="ListViewItem">
                 <Border Background="{TemplateBinding Background}"
