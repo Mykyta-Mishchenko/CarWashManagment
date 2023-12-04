@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Themes/RegularListViewItem.xaml"/>
                 <ResourceDictionary Source="Themes/RegularExpander.xaml"/>
                 <ResourceDictionary Source="Themes/RegularScrollBar.xaml"/>
+                <ResourceDictionary Source="Themes/RegularDataGrid.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
 
