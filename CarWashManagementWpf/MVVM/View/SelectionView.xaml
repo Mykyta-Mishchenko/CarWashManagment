@@ -22,7 +22,8 @@
                       ItemContainerStyle="{StaticResource RegularListViewItem}"
                       Margin="0,50,0,0"
                       BorderThickness="0"
-                      SelectedItem="{Binding ChosenUtility}">
+                      SelectedItem="{Binding ChosenUtility}"
+                      >
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -37,7 +38,7 @@
                       Style="{StaticResource RegularExpander}"
                       Margin="30,20,30,0">
                     <StackPanel>
-                        <ScrollViewer>
+                        <ScrollViewer Height="70">
                             <StackPanel>
                                 <ListView ItemsSource="{Binding Workers}"
                                   SelectionMode="Multiple"

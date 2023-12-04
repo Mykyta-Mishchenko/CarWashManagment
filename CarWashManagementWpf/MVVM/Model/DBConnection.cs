@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
@@ -18,23 +19,23 @@ namespace CarWashManagementWpf.MVVM.Model
         private MySqlConnection MySQLConnection;
         public DBConnection()
         {
-            Console.WriteLine("Start");
+            //Console.WriteLine("Start");
             MySQLConnection = new MySqlConnection(MySQLCon);
             try
             {
                 MySQLConnection.Open();
-                UpdateDataBase();
-                Console.WriteLine("Connection is opened");
+                //Console.WriteLine("Connection is opened");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
             }
             finally
             {
                 MySQLConnection.Close();
             }
-            Console.WriteLine("End");
+            //Console.WriteLine("End");
+            UpdateDataBase();
         }
         public DataTable GetRecordTable()
         {
@@ -42,6 +43,7 @@ namespace CarWashManagementWpf.MVVM.Model
             DataColumn[] cols =
             {
                 new DataColumn("ID", typeof(Int32)),
+                new DataColumn("UNIQUE_ID", typeof(Int32)),
                 new DataColumn("Service_ID", typeof(Int32)),
                 new DataColumn("Service_Type", typeof(string)),
                 new DataColumn("Service_Price", typeof(string)),
@@ -54,7 +56,7 @@ namespace CarWashManagementWpf.MVVM.Model
             try
             {
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                cmd.CommandText = "SELECT ServiceTotal.service_id, ServiceTotal.workers," +
+                cmd.CommandText = "SELECT ServiceTotal.id, ServiceTotal.service_id, ServiceTotal.workers," +
                     " ServiceTotal.date, ServiceTypes.service_type," +
                     " ServiceTypes.service_price FROM ServiceTotal, ServiceTypes" +
                     " WHERE ServiceTypes.service_id = ServiceTotal.service_id";
@@ -64,10 +66,14 @@ namespace CarWashManagementWpf.MVVM.Model
                     {
                         DataRow row = recordTable.NewRow();
                         row["ID"] = i;
+                        row["UNIQUE_ID"] = reader.GetInt32("id");
                         row["Service_ID"] = reader.GetInt32("service_id");
                         row["Service_Type"] = reader.GetString("service_type");
                         row["Service_Price"] = reader.GetInt32("service_price");
-                        row["Service_Date"] = reader.GetString("date");
+                        string date = reader.GetString("date");
+                        DateTime inputDateTime = DateTime.ParseExact(date, "dd.MM.yyyy HH:mm:ss", null);
+                        date = inputDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                        row["Service_Date"] = date;
                         row["Service_Workers"] = reader.GetString("workers");
                         recordTable.Rows.Add(row);
                     }
@@ -121,10 +127,12 @@ namespace CarWashManagementWpf.MVVM.Model
                 MySQLConnection.Open();
 
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                cmd.CommandText = "UPDATE ServiceTotal Set date='" + date + "' WHERE id = " + id;
+                Debug.WriteLine(date);
+                Debug.WriteLine(id);
+                cmd.CommandText = "UPDATE ServiceTotal SET date='" + date + "' WHERE id = " + id;
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
         }
         public void AddWorker(string name)
@@ -138,7 +146,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.CommandText = "INSERT INTO ServiceWorkers (worker_name) VALUES ('" + name + "')";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public void RemoveWorker(string name)
@@ -152,7 +160,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.CommandText = "DELETE FROM ServiceWorkers WHERE worker_name = '" + name + "'";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); OnDataChanged(); }
         }
         public List<string> GetAllWorkers()
@@ -173,7 +181,7 @@ namespace CarWashManagementWpf.MVVM.Model
                     }
                 }
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
             return workers;
         }
@@ -210,7 +218,7 @@ namespace CarWashManagementWpf.MVVM.Model
                     workers[worker.Key] *= 0.5f;
                 }
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
             return workers;
         }
@@ -222,10 +230,10 @@ namespace CarWashManagementWpf.MVVM.Model
                 MySQLConnection.Open();
 
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                cmd.CommandText = "DELETE FROM ServiceTotal WHERE date < DATEADD(day,-1,GETDATE())";
+                cmd.CommandText = "DELETE FROM ServiceTotal WHERE date < NOW() - INTERVAL 1 DAY";
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Debug.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); OnDataChanged(); }
         }
 

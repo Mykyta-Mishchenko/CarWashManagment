@@ -7,11 +7,55 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CarWashManagementWpf.MVVM.ViewModel
 {
     class WholeTableViewModel : Core.ViewModel
     {
+
+        private RecordRow _selectedRow;
+
+        public RecordRow SelectedRow
+        {
+            get { return _selectedRow; }
+            set 
+            {
+                /*if (_selectedRow!= null && _selectedRow.ID == value.ID)
+                {
+                    if (SelectedRow.Date != value.Date)
+                    {
+                        _selectedRow = value;
+                        OnPropertyChanged();
+                        MessageBox.Show($"ID: {_selectedRow.ID}\nNew date {_selectedRow.Date}", "Data changed", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    }
+                } else
+                {
+                    _selectedRow = value;
+                    OnPropertyChanged();
+                }*/
+
+                _selectedRow = value;
+                OnPropertyChanged();
+                //MessageBox.Show($"ID: {_selectedRow.ID}\nNew date {_selectedRow.Date}", "Data changed", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        void OnDataTimeChanged(object sender, EventArgs e)
+        {
+            if (SelectedRow!=null)
+            {
+
+                BindInstance.BindInstance.ChangeDate(SelectedRow.ID, SelectedRow.Date.ToString());
+                MessageBox.Show($"ID: {SelectedRow.ID}\nNew date: {SelectedRow.Date}", "Date changed");
+                MessageBox.Show($"{records[0].ID} {records[0].Date}\n{records[1].ID} {records[1].Date}\n{records[2].ID} {records[2].Date}", "Date changed");
+                //records = BindInstance.BindInstance.GetRecordList();
+                //OnPropertyChanged(nameof(records));
+
+            }
+        }
+
         private IBindService _bindInstance;
 
         public IBindService BindInstance
@@ -44,6 +88,7 @@ namespace CarWashManagementWpf.MVVM.ViewModel
             NavigateToSelection = new RelayCommand(execute: o => Navigation.NavigateTo<SelectionViewModel>(), canExecute: o => true);
             NavigateToMoneySplit = new RelayCommand(execute: o => Navigation.NavigateTo<MoneySplitViewModel>(), canExecute: o => true);
             records = BindInstance.BindInstance.GetRecordList();
+            RecordRow.DateTimeChanged += OnDataTimeChanged;
             
         }
     }
