@@ -8,6 +8,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
@@ -22,6 +23,7 @@ namespace CarWashManagementWpf.MVVM.Model
             try
             {
                 MySQLConnection.Open();
+                UpdateDataBase();
                 Console.WriteLine("Connection is opened");
             }
             catch (Exception ex)
@@ -86,7 +88,7 @@ namespace CarWashManagementWpf.MVVM.Model
             int service_id = 0;
             string workers_IDs = "";
             DateTime currentDateTime = DateTime.Now;
-            string formattedDateTime = currentDateTime.ToString("yyyy-MM--dd HH:mm:ss");
+            string formattedDateTime = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
             try
             {
@@ -199,6 +201,7 @@ namespace CarWashManagementWpf.MVVM.Model
                     string[] rowWorkers = row["Service_Workers"].ToString().Split('/');
                     for (int i = 0; i < rowWorkers.Length; i++)
                     {
+                        if (!workers.ContainsKey(rowWorkers[i].Trim())) continue;
                         workers[rowWorkers[i].Trim()] += Convert.ToSingle(row["Service_Price"]) / rowWorkers.Length;
                     }
                 }
@@ -210,6 +213,20 @@ namespace CarWashManagementWpf.MVVM.Model
             catch (Exception ex) { Console.WriteLine(ex.Message); }
             finally { MySQLConnection.Close(); }
             return workers;
+        }
+        private void UpdateDataBase()
+        {
+            try
+            {
+                MySQLConnection = new MySqlConnection(MySQLCon);
+                MySQLConnection.Open();
+
+                MySqlCommand cmd = MySQLConnection.CreateCommand();
+                cmd.CommandText = "DELETE FROM ServiceTotal WHERE date < DATEADD(day,-1,GETDATE())";
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            finally { MySQLConnection.Close(); OnDataChanged(); }
         }
 
         public event EventHandler DataChanged;
