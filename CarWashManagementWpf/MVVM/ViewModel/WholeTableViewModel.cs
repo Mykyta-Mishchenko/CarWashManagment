@@ -50,8 +50,8 @@ namespace CarWashManagementWpf.MVVM.ViewModel
                 BindInstance.BindInstance.ChangeDate(SelectedRow.ID, SelectedRow.Date.ToString());
                 MessageBox.Show($"ID: {SelectedRow.ID}\nNew date: {SelectedRow.Date}", "Date changed");
                 MessageBox.Show($"{records[0].ID} {records[0].Date}\n{records[1].ID} {records[1].Date}\n{records[2].ID} {records[2].Date}", "Date changed");
-                records = BindInstance.BindInstance.GetRecordList();
-                OnPropertyChanged(nameof(records));
+                //records = BindInstance.BindInstance.GetRecordList();
+                //OnPropertyChanged(nameof(records));
 
             }
         }
