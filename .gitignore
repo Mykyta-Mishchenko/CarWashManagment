@@ -61,6 +61,8 @@ dlldata.c
 
 *.bin
 *.v2
+*.dtbcache.v2
+
 
 # Chutzpah Test files
 _Chutzpah*
