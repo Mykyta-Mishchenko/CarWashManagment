@@ -174,19 +174,19 @@ namespace CarWashManagementWpf.MVVM.ViewModel
                 {
                     Name = "Car body wash",
                     ImageSource = "../Images/car-wash.jpg",
-                    Price = "$250"
+                    Price = "250₴"
                 },
                 new Utility()
                 {
                     Name = "Interior and body",
                     ImageSource = "../Images/car-interior-wash.jpg",
-                    Price = "$350"
+                    Price = "350₴"
                 },
                 new Utility()
                 {
                     Name = "Dry cleaning",
                     ImageSource = "../Images/car-dry-cleaning.jpg",
-                    Price = "$1800"
+                    Price = "1800₴"
                 }
             };
         }

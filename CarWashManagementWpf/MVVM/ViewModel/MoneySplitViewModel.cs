@@ -14,6 +14,14 @@ namespace CarWashManagementWpf.MVVM.ViewModel
 {
     class MoneySplitViewModel : Core.ViewModel
     {
+        private double _total;
+
+        public double Total
+        {
+            get { return _total; }
+            set { _total = value; }
+        }
+
         private IBindService _bindInstance;
 
         public IBindService BindInstance
@@ -38,12 +46,14 @@ namespace CarWashManagementWpf.MVVM.ViewModel
             BindInstance.BindInstance.DBConnection.DataChanged += OnDataChanged;
             NavigateToWholeTable = new RelayCommand(execute: o => Navigation.NavigateTo<WholeTableViewModel>(), canExecute: o => true);
             Workers = BindInstance.BindInstance.GetWorkersBill();
-            
+            Total = BindInstance.BindInstance.GetTotalBill();
+
         }
 
         public void OnDataChanged(object sender, EventArgs e)
         {
             Workers = BindInstance.BindInstance.GetWorkersBill();
+            Total = BindInstance.BindInstance.GetTotalBill();
         }
 
     }

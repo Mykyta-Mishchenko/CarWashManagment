@@ -15,6 +15,24 @@
             <DataGrid ItemsSource="{Binding Workers}"
                       Margin="20,20,20,0">
             </DataGrid>
+            <Border Background="White"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    Margin="20,0,20,0">
+                <StackPanel Orientation="Horizontal"
+                        
+                        Background="White">
+                    <TextBlock Text="Total:      "
+                           FontSize="16"
+                           Margin="15,2,2,0"/>
+                    <TextBlock Text="{Binding Total}"
+                           FontSize="16"
+                               Margin="-1,2,2,0"/>
+
+                </StackPanel>
+            </Border>
+                    
+            
         </StackPanel>
         <Grid Grid.Row="1" Background="#FFE296">
             <Grid.ColumnDefinitions>
