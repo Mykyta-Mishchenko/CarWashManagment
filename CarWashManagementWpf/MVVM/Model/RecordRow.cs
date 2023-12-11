@@ -17,28 +17,17 @@ namespace CarWashManagementWpf.MVVM.Model
         private int id;
         private string serviceType;
         private double price;
-        private DateTime date;
+        private string date;
         private string workers;
         public int ID { get { return id; }set { id = value; } }
         public string ServiceType { get {  return serviceType; } set {  serviceType = value; } }
         public double Price { get { return price; } set { price = value; } }
-        public DateTime Date 
+        public string Date 
         {
             get { return date; } 
             set 
             {
-               /* if (date != DateTime.MinValue)
-                {
-                    date = value;
-
-                    MessageBox.Show(date.ToString());
-
-                } else
-                {
-                    date = value;
-                }*/
-                //
-                if (date != DateTime.MinValue)
+                if (date != DateTime.MinValue.ToString())
                 {
                     date = value;
                     OnDateTimeChanged();

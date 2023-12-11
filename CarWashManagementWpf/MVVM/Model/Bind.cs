@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Diagnostics;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
@@ -26,8 +27,8 @@ namespace CarWashManagementWpf.MVVM.Model
                     Price = double.Parse((string)row["Service_Price"]),
                     // Price = (float)row["Service_Price"],
                     //Date = (DateTime)row["Service_Date"],
-                    Date = DateTime.Parse((string)row["Service_Date"]),
-
+                    Date = (string)row["Service_Date"],
+                    //DateTime.Parse((string)row["Service_Date"]),
                     Workers = (string)row["Service_Workers"]
                 });
             }
@@ -81,7 +82,8 @@ namespace CarWashManagementWpf.MVVM.Model
             {
                 if ((int)row["ID"] == id)
                 {
-                    DBConnection.ChangeDate(newDate, (int)row["Service_ID"]);
+                    Console.WriteLine(newDate);
+                    DBConnection.ChangeDate(newDate, (int)row["UNIQUE_ID"]);
                     break;
                 }
             }
