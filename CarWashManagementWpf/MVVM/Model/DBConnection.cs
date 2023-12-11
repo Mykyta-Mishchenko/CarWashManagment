@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CarWashManagementWpf.MVVM.Model
 {
@@ -59,7 +60,8 @@ namespace CarWashManagementWpf.MVVM.Model
                 cmd.CommandText = "SELECT ServiceTotal.id, ServiceTotal.service_id, ServiceTotal.workers," +
                     " ServiceTotal.date, ServiceTypes.service_type," +
                     " ServiceTypes.service_price FROM ServiceTotal, ServiceTypes" +
-                    " WHERE ServiceTypes.service_id = ServiceTotal.service_id";
+                    " WHERE ServiceTypes.service_id = ServiceTotal.service_id " +
+                    " AND ServiceTotal.date >= CURDATE()";
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
                     for (int i = 1; reader.Read(); ++i)
@@ -230,7 +232,7 @@ namespace CarWashManagementWpf.MVVM.Model
                 MySQLConnection.Open();
 
                 MySqlCommand cmd = MySQLConnection.CreateCommand();
-                cmd.CommandText = "DELETE FROM ServiceTotal WHERE date < NOW() - INTERVAL 1 DAY";
+                cmd.CommandText = "DELETE FROM ServiceTotal WHERE date < NOW() - INTERVAL 30 DAY";
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex) { Debug.WriteLine(ex.Message); }
