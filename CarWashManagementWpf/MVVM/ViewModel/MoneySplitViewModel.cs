@@ -1,5 +1,6 @@
 ﻿using CarWashManagementWpf.Core;
 using CarWashManagementWpf.MVVM.Model;
+using CarWashManagementWpf.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,21 @@ namespace CarWashManagementWpf.MVVM.ViewModel
 {
     class MoneySplitViewModel : Core.ViewModel
     {
+        private double _total;
+
+        public double Total
+        {
+            get { return _total; }
+            set { _total = value; }
+        }
+
+        private IBindService _bindInstance;
+
+        public IBindService BindInstance
+        {
+            get { return _bindInstance; }
+            set { _bindInstance = value; }
+        }
         private INavigationService _navigation;
 
         public INavigationService Navigation
@@ -23,23 +39,21 @@ namespace CarWashManagementWpf.MVVM.ViewModel
         public RelayCommand NavigateToWholeTable { get; set; }
 
         public ObservableCollection<Worker> Workers { get; set; }
-        public MoneySplitViewModel(INavigationService navigation)
+        public MoneySplitViewModel(INavigationService navigation, IBindService bind)
         {
+            BindInstance = bind;
             Navigation = navigation;
+            BindInstance.BindInstance.DBConnection.DataChanged += OnDataChanged;
             NavigateToWholeTable = new RelayCommand(execute: o => Navigation.NavigateTo<WholeTableViewModel>(), canExecute: o => true);
-            Workers = new ObservableCollection<Worker>()
-            {
-                new Worker()
-                {
-                    Name="Petro",
-                    Money=1800
-                },
-                new Worker() {
-                    Name="Ivan",
-                    Money=900
-                }
+            Workers = BindInstance.BindInstance.GetWorkersBill();
+            Total = BindInstance.BindInstance.GetTotalBill();
 
-            };
+        }
+
+        public void OnDataChanged(object sender, EventArgs e)
+        {
+            Workers = BindInstance.BindInstance.GetWorkersBill();
+            Total = BindInstance.BindInstance.GetTotalBill();
         }
 
     }

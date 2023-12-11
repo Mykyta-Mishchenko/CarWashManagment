@@ -11,12 +11,36 @@
             <RowDefinition/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
+        
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      Grid.Row="0"
+                      Background="Transparent">
+            
+
             <DataGrid ItemsSource="{Binding records}"
-                      Margin="20,20,20,0">
-                
+                      Margin="20,20,20,0"
+                      VerticalAlignment="Top"
+                      
+                      SelectedItem="{Binding SelectedRow, UpdateSourceTrigger=PropertyChanged}">
+
+
+                <!--  <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="auto" />
+                    <DataGridTextColumn Header="ServiceType" Binding="{Binding ServiceType}" Width="auto" />
+                    <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="auto"/>
+                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="auto"/>
+                </DataGrid.Columns>-->
+
+
+                <!--   <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Width" Value="auto"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>  -->
+
             </DataGrid>
-        </StackPanel>
+        </ScrollViewer>
         <Grid Grid.Row="1" Background="#FFE296">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
